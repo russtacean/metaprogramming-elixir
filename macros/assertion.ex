@@ -50,18 +50,20 @@ end
 defmodule Assertion.Test do
   def run(tests, module) do
     Enum.each(tests, fn {test_func, description} ->
-      case apply(module, test_func, []) do
-        :ok ->
-          IO.write(".")
+      Task.async(fn ->
+        case apply(module, test_func, []) do
+          :ok ->
+            IO.write(".")
 
-        {:fail, reason} ->
-          IO.puts("""
-          =========================
-          FAILURE: #{description}
-          =========================
-          #{reason}
-          """)
-      end
+          {:fail, reason} ->
+            IO.puts("""
+            =========================
+            FAILURE: #{description}
+            =========================
+            #{reason}
+            """)
+        end
+      end)
     end)
   end
 

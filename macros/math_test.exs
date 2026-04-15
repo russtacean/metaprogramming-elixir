@@ -4,6 +4,7 @@ defmodule MathTest do
   test "integers can be added and subtracted" do
     assert 1 + 1 == 2
     assert 2 + 3 == 5
+    # intentional failure
     assert 5 - 5 == 10
   end
 
@@ -15,6 +16,7 @@ defmodule MathTest do
   test "unary operators and boolean expressions can be asserted" do
     assert true
     assert !false
+    # intentional failure
     assert !true
   end
 end
