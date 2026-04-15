@@ -4,6 +4,11 @@ defmodule MathTest do
   test "integers can be added and subtracted" do
     assert 1 + 1 == 2
     assert 2 + 3 == 5
+    assert 1 + 1 != 3
+    assert 1 > 0
+    assert 1 < 2
+    assert 1 <= 1
+    assert 1 >= 0
     # intentional failure
     assert 5 - 5 == 10
   end
