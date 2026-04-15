@@ -11,4 +11,10 @@ defmodule MathTest do
     assert 5 * 5 == 25
     assert 10 / 2 == 5
   end
+
+  test "unary operators and boolean expressions can be asserted" do
+    assert true
+    assert !false
+    assert !true
+  end
 end

@@ -24,10 +24,25 @@ defmodule Assertion do
     end
   end
 
+  # Infix operators have AST shape like
   # {:==, [context: Elixir, imports: [{2, Kernel}]], [5, 5]}
   defmacro assert({operator, _, [lhs, rhs]}) do
     quote bind_quoted: [operator: operator, lhs: lhs, rhs: rhs] do
       Assertion.Test.assert(operator, lhs, rhs)
+    end
+  end
+
+  # Unary operators have AST shape like
+  # {:!, [context: Elixir, imports: [{1, Kernel}]], [true]}
+  defmacro assert({operator, _, [operand]}) do
+    quote bind_quoted: [operator: operator, operand: operand] do
+      Assertion.Test.assert(operator, operand)
+    end
+  end
+
+  defmacro assert(boolExpr) when is_boolean(boolExpr) do
+    quote bind_quoted: [boolExpr: boolExpr] do
+      Assertion.Test.assert(boolExpr)
     end
   end
 end
@@ -74,5 +89,20 @@ defmodule Assertion.Test do
        Expected: #{inspect(lhs)}
        to be greater than: #{inspect(rhs)}
      """}
+  end
+
+  def assert(:!, operand) when not operand, do: :ok
+
+  def assert(:!, operand) do
+    {:fail,
+     """
+     FAILURE:
+       Expected: #{inspect(operand)}
+       to be true after negation
+     """}
+  end
+
+  def assert(boolExpr) when is_boolean(boolExpr) do
+    if boolExpr, do: :ok, else: {:fail, "Expected true, got false"}
   end
 end
