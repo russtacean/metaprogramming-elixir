@@ -1,8 +1,10 @@
 defmodule ControlFlow do
   defmacro my_if(expr, do: if_block) do
-    case(unquote(expr)) do
-      result when result in [false, nil] -> nil
-      _ -> unquote(if_block)
+    quote do
+      case(unquote(expr)) do
+        result when result in [false, nil] -> nil
+        _ -> unquote(if_block)
+      end
     end
   end
 
