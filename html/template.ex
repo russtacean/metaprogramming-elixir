@@ -3,15 +3,17 @@ defmodule Template do
 
   def render do
     markup do
-      table do
-        tr do
+      table id: "main-table" do
+        tr class: "row" do
           for i <- 0..5 do
-            td(do: text("Cell #{i}"))
+            td do
+              text("Cell #{i}")
+            end
           end
         end
       end
 
-      div do
+      div class: "container" do
         text("Some nested content")
       end
     end
